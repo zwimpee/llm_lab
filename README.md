@@ -9,3 +9,6 @@ To install this project, run
 ```bash
 pip install -e .
 ```
+
+### Run an experiment
+...

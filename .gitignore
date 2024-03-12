@@ -9984,3 +9984,9 @@ llm_lab/share/jupyter/nbextensions/jupyter-js-widgets/extension.js
 llm_lab/share/jupyter/nbextensions/jupyter-js-widgets/extension.js.LICENSE.txt
 llm_lab/share/jupyter/nbextensions/jupyter-js-widgets/extension.js.map
 llm_lab/share/man/man1/ipython.1
+src/llm_lab.egg-info/dependency_links.txt
+src/llm_lab.egg-info/entry_points.txt
+src/llm_lab.egg-info/PKG-INFO
+src/llm_lab.egg-info/requires.txt
+src/llm_lab.egg-info/SOURCES.txt
+src/llm_lab.egg-info/top_level.txt
