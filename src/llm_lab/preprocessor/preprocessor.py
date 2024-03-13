@@ -1,5 +1,6 @@
 from datasets import load_dataset
 from transformers import AutoTokenizer
+from llm_lab.utils.utils import get_dataloaders
 
 class Preprocessor:
     def __init__(self, config):
@@ -46,5 +47,6 @@ class Preprocessor:
         train_data = dataset[train_split]
         eval_data = dataset[eval_split]
         test_data = dataset[test_split] if test_split else None
-        return train_data, eval_data, test_data
+        train_dataloader, eval_dataloader, test_dataloader = get_dataloaders(self.config, self.tokenizer, train_data, eval_data, test_data)
+        return self.tokenizer, train_dataloader, eval_dataloader, test_dataloader
 

@@ -1,4 +1,5 @@
 __pycache__
+src/llm_lab.egg-info
 llm_lab/pyvenv.cfg
 llm_lab/Lib/site-packages/pythoncom.py
 llm_lab/Lib/site-packages/pywin32.pth

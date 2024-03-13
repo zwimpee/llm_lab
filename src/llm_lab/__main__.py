@@ -3,7 +3,17 @@ from llm_lab.config.config import Config
 from llm_lab.preprocessor.preprocessor import Preprocessor
 from llm_lab.trainer.trainer import LLMLabTrainer
 from llm_lab.evaluator.evaluator import Evaluator
-from llm_lab.utils.utils import initialize_model, load_model
+from llm_lab.utils.utils import initialize_model
+
+import numpy as np
+import evaluate
+
+metric = evaluate.load("accuracy")
+
+def compute_metrics(eval_pred):
+    logits, labels = eval_pred
+    predictions = np.argmax(logits, axis=-1)
+    return metric.compute(predictions=predictions, references=labels)
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="LLM Lab Project")
@@ -22,11 +32,13 @@ def main():
 
     # Preprocess data (you might need to adjust the parameters based on your config)
     preprocessor = Preprocessor(config)
-    train_data, val_data, test_data = preprocessor.preprocess()
+    tokenizer, train_dataloader, val_dataloader, test_dataloader = preprocessor.preprocess()
 
     # Initialize trainer
-    trainer = LLMLabTrainer(model=model, config=config, train_dataset=train_data, val_dataset=val_data)
-
+    trainer = LLMLabTrainer(
+        model=model, tokenizer=tokenizer, config=config, train_dataloader=train_dataloader, val_dataloader=val_dataloader
+    )
+    
     # Train the model
     trainer.train()
 
