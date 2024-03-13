@@ -1,10 +1,18 @@
 {
-    "output_dir": "/opt/data/",
     "model_name": "meta-llama/Llama-2-7b-chat-hf",
-    
+    "max_length": 4096,
+    "dataset": {
+        "name": "cais/mmlu",
+        "type": "hf",
+        "splits": {
+            "train_split": "auxiliary_train",
+            "eval_split": "validation",
+            "test_split": "test"
+        }
+    },
     "training_args": {
-        "output_dir": {"$ref": "#/output_dir"},
-        "overwrite_output_dir": false,
+        "output_dir": "/opt/data/models/meta-llama/Llama-2-7b-chat-hf/mmlu/",
+        "overwrite_output_dir": true,
         "do_train": true,
         "do_eval": true,
         "evaluation_strategy": "steps",
@@ -20,7 +28,7 @@
         "num_train_epochs": 3.0,
         "max_steps": -1,
         "warmup_steps": 0,
-        "logging_dir": "path/to/logging/directory",
+        "logging_dir": "/opt/data/logs/",
         "logging_strategy": "steps",
         "save_strategy": "steps",
         "save_steps": 500,

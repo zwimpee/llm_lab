@@ -1,7 +1,7 @@
-def save_model(model, path):
-    # Implement model saving logic
-    pass
+from transformers import AutoModelForCausalLM
 
-def load_model(path):
-    # Implement model loading logic
-    return model
+def initialize_model(config):
+    return AutoModelForCausalLM.from_pretrained(config.get("model_name"))
+
+def load_model():
+    ...

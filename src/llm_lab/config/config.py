@@ -1,9 +1,10 @@
+import os
 import json
 
 class Config:
     def __init__(self, config_path):
         self.config = self.load_config(config_path)
-    
+        
     def load_config(self, config_path):
         with open(config_path, 'r') as file:
             return json.load(file)
