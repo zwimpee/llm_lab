@@ -32,11 +32,11 @@ def main():
 
     # Preprocess data (you might need to adjust the parameters based on your config)
     preprocessor = Preprocessor(config)
-    tokenizer, train_dataloader, val_dataloader, test_dataloader = preprocessor.preprocess()
+    tokenizer, train_dataset, val_dataset, test_dataset = preprocessor.preprocess()
 
     # Initialize trainer
     trainer = LLMLabTrainer(
-        model=model, tokenizer=tokenizer, config=config, train_dataloader=train_dataloader, val_dataloader=val_dataloader
+        model=model, tokenizer=tokenizer, config=config, train_dataset=train_dataset, val_dataset=val_dataset
     )
     
     # Train the model

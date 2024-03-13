@@ -1,6 +1,7 @@
 {
     "model_name": "meta-llama/Llama-2-7b-chat-hf",
-    "model_type": "CausalLM",
+    "model_type": "SequenceClassification",
+    "num_labels": 4,
     "max_length": 4096,
     "pad_to_multiple_of": 8,
     "dataset": {
