@@ -2,10 +2,10 @@ import evaluate
 
 
 class Evaluator:
-    def __init__(self, config, model, test_data_loader):
+    def __init__(self, config, model, test_data):
         self.config = config
         self.model = model
-        self.test_data_loader = test_data_loader
+        self.test_data = test_data
         self.evaluator = evaluate.evaluator(config.get("dataset")["task_type"])
 
     def evaluate(self):

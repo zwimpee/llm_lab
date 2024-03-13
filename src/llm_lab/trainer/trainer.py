@@ -1,4 +1,4 @@
-from transformers import Trainer, TrainingArguments, DataCollatorForLanguageModeling 
+from transformers import Trainer, TrainingArguments, DataCollatorForLanguageModeling, DataCollatorWithPadding
 
 import numpy as np
 import evaluate
@@ -13,14 +13,17 @@ def compute_metrics(eval_pred):
     return metric.compute(predictions=predictions, references=labels)
 
 class LLMLabTrainer:
-    def __init__(self, model, tokenizer, config, train_dataset, val_dataset):
+    def __init__(self, model, tokenizer, config, train_data, val_data):
         self.config = config
         self.model = model
-        self.train_dataset = train_dataset
-        self.val_dataset = val_dataset
-        self.data_collator = DataCollatorForLanguageModeling(
-            tokenizer=tokenizer, mlm=False, pad_to_multiple_of=config.get("pad_to_multiple_of")
-            )
+        self.train_data = train_data
+        self.val_data = val_data
+        self.data_collator = DataCollatorWithPadding(
+            tokenizer=tokenizer, 
+            padding=True, 
+            max_length=config.get("max_length"),
+            pad_to_multiple_of=config.get("pad_to_multiple_of")
+        )
 
         self.training_args = self.config.get("training_args", {})
         
@@ -30,8 +33,8 @@ class LLMLabTrainer:
             tokenizer=tokenizer,
             data_collator=self.data_collator,
             args=TrainingArguments(**self.training_args),
-            train_dataset=self.train_dataset,
-            eval_dataset=self.val_dataset,
+            train_dataset=self.train_data,
+            eval_dataset=self.val_data,
             compute_metrics=compute_metrics
         )
 

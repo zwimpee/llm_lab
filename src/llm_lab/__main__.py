@@ -5,15 +5,7 @@ from llm_lab.trainer.trainer import LLMLabTrainer
 from llm_lab.evaluator.evaluator import Evaluator
 from llm_lab.utils.utils import initialize_model
 
-import numpy as np
-import evaluate
 
-metric = evaluate.load("accuracy")
-
-def compute_metrics(eval_pred):
-    logits, labels = eval_pred
-    predictions = np.argmax(logits, axis=-1)
-    return metric.compute(predictions=predictions, references=labels)
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="LLM Lab Project")
@@ -32,19 +24,19 @@ def main():
 
     # Preprocess data (you might need to adjust the parameters based on your config)
     preprocessor = Preprocessor(config)
-    tokenizer, train_dataset, val_dataset, test_dataset = preprocessor.preprocess()
+    tokenizer, train_data, val_data, test_data = preprocessor.preprocess()
 
     # Initialize trainer
     trainer = LLMLabTrainer(
-        model=model, tokenizer=tokenizer, config=config, train_dataset=train_dataset, val_dataset=val_dataset
+        model=model, tokenizer=tokenizer, config=config, train_data=train_data, val_data=val_data
     )
     
     # Train the model
     trainer.train()
 
     # Evaluate the model
-    # evaluator = Evaluator(model=model, test_data_loader=None)
-    # evaluation_metrics = evaluator.evaluate()
+    evaluator = Evaluator(config=config, model=model, test_data=test_data)
+    evaluator.evaluate()
 
     # Further steps can include saving the model, logging metrics, etc.
     print("Training and evaluation complete.")
