@@ -1,9 +1,12 @@
 {
     "model_name": "meta-llama/Llama-2-7b-chat-hf",
+    "model_type": "CausalLM",
     "max_length": 4096,
+    "pad_to_multiple_of": 8,
     "dataset": {
         "name": "cais/mmlu",
         "type": "hf",
+        "task_type": "question-answering",
         "splits": {
             "train_split": "auxiliary_train",
             "eval_split": "validation",
