@@ -11,6 +11,8 @@ class Evaluator:
     def evaluate(self):
         return self.evaluator.compute(
             model_or_pipeline=self.model,
-            data=self.test_data_loader
+            data=self.test_data,
+            metric=self.config.get("metric", "accuracy"),
+            label_mapping=self.config.get("label_mapping"),
         )
         
