@@ -1,3 +1,6 @@
+import logging
+import os
+import json
 import argparse
 from llm_lab.config.config import Config
 from llm_lab.preprocessor.preprocessor import Preprocessor
@@ -5,7 +8,9 @@ from llm_lab.trainer.trainer import LLMLabTrainer
 from llm_lab.evaluator.evaluator import Evaluator
 from llm_lab.utils.utils import initialize_model
 
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
+logger = logging.getLogger(__name__)
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="LLM Lab Project")
@@ -13,33 +18,41 @@ def parse_arguments():
     return parser.parse_args()
 
 def main():
-    # Parse command line arguments
+    logger.info("Starting LLM Lab project")
+    
+    logger.info("Parsing arguments")
     args = parse_arguments()
 
-    # Load configuration
+    logger.info("Initializing configuration")
     config = Config(args.config)
 
+    logger.info("Initializing model")
     model = initialize_model(config)
     
 
-    # Preprocess data (you might need to adjust the parameters based on your config)
+    logger.info("Preprocessing data")
     preprocessor = Preprocessor(config)
     tokenizer, train_data, val_data, test_data = preprocessor.preprocess()
 
-    # Initialize trainer
+    logger.info("Initializing trainer")
     trainer = LLMLabTrainer(
         model=model, tokenizer=tokenizer, config=config, train_data=train_data, val_data=val_data
     )
     
-    # Train the model
+    logger.info("Training the model")
     trainer.train()
 
-    # Evaluate the model
+    logger.info("Evaluating the model")
     evaluator = Evaluator(config=config, model=model, test_data=test_data)
-    evaluator.evaluate()
+    eval_results = evaluator.evaluate()
+    
+    logger.info("Saving evaluation results")
+    with open(os.path.join(config.get("output_dir", "output"), "eval_results.json"), "w") as f:
+        json.dump(eval_results, f, indent=4)
+    
 
     # Further steps can include saving the model, logging metrics, etc.
-    print("Training and evaluation complete.")
+    logger.info("Training and evaluation complete.")
 
 if __name__ == "__main__":
     main()

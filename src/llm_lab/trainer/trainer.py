@@ -20,7 +20,7 @@ class LLMLabTrainer:
         self.val_data = val_data
         self.data_collator = DataCollatorWithPadding(
             tokenizer=tokenizer, 
-            padding=True, 
+            padding="max_length", 
             max_length=config.get("max_length"),
             pad_to_multiple_of=config.get("pad_to_multiple_of")
         )

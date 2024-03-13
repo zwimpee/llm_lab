@@ -7,7 +7,8 @@ class Preprocessor:
         self.tokenizer = AutoTokenizer.from_pretrained(config.get("model_name"))
         # Ensure the tokenizer is correctly set up with a padding token, if it doesn't already have one
         if self.tokenizer.pad_token is None:
-            self.tokenizer.add_special_tokens({'pad_token': '[PAD]'})
+            #self.tokenizer.add_special_tokens({'pad_token': '[PAD]'})
+            self.tokenizer.pad_token = self.tokenizer.eos_token
 
     def preprocess(self, dataset_type: str = "hf"):
         if dataset_type == "hf":
