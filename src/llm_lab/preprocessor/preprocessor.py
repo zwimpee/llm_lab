@@ -23,7 +23,7 @@ class Preprocessor:
             raise NotImplementedError
 
     def preprocess_hf(self, train_split, eval_split, test_split=None):
-        dataset = load_dataset(self.config.get("dataset")["name"], "all")
+        dataset = load_dataset(self.config.get("dataset")["name"], self.config.get("dataset").get("args").get("categories").get("STEM"))
 
         def process_example(example):
             # Format the question according to the required structure

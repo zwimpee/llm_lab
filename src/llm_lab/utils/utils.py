@@ -5,7 +5,7 @@ def initialize_model(config):
     if config.get("model_type") == "CausalLM":
         model = AutoModelForCausalLM.from_pretrained(config.get("model_name"))
     elif config.get("model_type") == "SequenceClassification":
-        model = AutoModelForSequenceClassification.from_pretrained(config.get("model_name"), num_labels=config.get("num_labels"))
+        model = AutoModelForSequenceClassification.from_pretrained(config.get("model_name"), num_labels=config.get("num_labels")).bfloat16()
     elif config.get("model_type") == "TokenClassification":
         raise NotImplementedError
     elif config.get("model_type") == "QuestionAnswering":
