@@ -34,6 +34,8 @@
   },
   "metrics": ["accuracy"],
   "training_args": {
+    "report_to": "wandb",
+    "run_name": "llm_lab_20240314",
     "output_dir": "/opt/data/models/meta-llama/Llama-2-7b-chat-hf/mmlu/",
     "overwrite_output_dir": true,
     "do_train": true,
