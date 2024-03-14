@@ -1,5 +1,9 @@
+torch 
+torchvision 
+torchaudio
 transformers
 datasets
 evaluate
+peft
 huggingface-cli
 scikit-learn
