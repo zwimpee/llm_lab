@@ -1,5 +1,8 @@
+import logging
 from datasets import load_dataset
 from transformers import AutoTokenizer
+
+logger = logging.getLogger(__name__)
 
 class Preprocessor:
     def __init__(self, config):
@@ -23,7 +26,7 @@ class Preprocessor:
             raise NotImplementedError
 
     def preprocess_hf(self, train_split, eval_split, test_split=None):
-        dataset = load_dataset(self.config.get("dataset")["name"], self.config.get("dataset").get("args").get("categories").get("STEM"))
+        dataset = load_dataset(self.config.get("dataset")["name"], *self.config.get("dataset").get("category"))
 
         def process_example(example):
             # Format the question according to the required structure
@@ -53,8 +56,23 @@ class Preprocessor:
         # Apply processing function to the dataset, ensure batched processing is correctly handled
         processed_dataset = dataset.map(process_example, batched=False)
 
-        train_data = processed_dataset[train_split]
-        eval_data = processed_dataset[eval_split]
-        test_data = processed_dataset[test_split] if test_split else None
+        train_data = processed_dataset[train_split].shuffle(seed=self.config.get("training_args").get("seed"))
+        if max_train_examples := self.config.get("dataset").get("max_train_examples"):
+            logger.info(f"Selecting {max_train_examples} examples from train split.")
+            train_data = train_data.select(range(max_train_examples))
+            
+        eval_data = processed_dataset[eval_split].shuffle(seed=self.config.get("training_args").get("seed"))
+        if max_eval_examples := self.config.get("dataset").get("max_eval_examples"):
+            logger.info(f"Selecting {max_eval_examples} examples from eval split.")
+            eval_data = eval_data.select(range(max_eval_examples))
+        
+        test_data = processed_dataset[test_split].shuffle(seed=self.config.get("training_args").get("seed")) if test_split else None
+        if max_test_examples := self.config.get("dataset").get("max_test_examples") and test_data:
+            logger.info(f"Selecting {max_test_examples} examples from test split.")
+            test_data = test_data.select(range(max_test_examples))
+            
+        logger.info(f"{len(train_data)} train examples.")
+        logger.info(f"{len(eval_data)} train examples.")
+        logger.info(f"{len(test_data)} train examples.")
 
         return train_data, eval_data, test_data
