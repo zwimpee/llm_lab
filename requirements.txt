@@ -7,3 +7,4 @@ evaluate
 peft
 huggingface-cli
 scikit-learn
+wandb
