@@ -1,3 +1,5 @@
 transformers
 datasets
 evaluate
+huggingface-cli
+scikit-learn
